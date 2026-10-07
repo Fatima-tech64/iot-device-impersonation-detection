@@ -1,0 +1,19 @@
+{
+  "devices": [
+    {
+      "device_id": "IOT-001",
+      "device_type": "environment_sensor",
+      "temperature_range": {
+        "min": 20.0,
+        "max": 35.0
+      },
+      "humidity_range": {
+        "min": 40.0,
+        "max": 80.0
+      },
+      "expected_interval": 5,
+      "expected_motion_behavior": "intermittent",
+      "status": "trusted"
+    }
+  ]
+}

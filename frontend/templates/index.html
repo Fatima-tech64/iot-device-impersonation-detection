@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1220">
+  <title>IoT Security Monitoring System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="IoT Security Monitoring System home">
+        <span class="brand-mark" aria-hidden="true">IS</span>
+        <span><strong>IoT Security</strong><small>Monitoring Console</small></span>
+      </a>
+      <div class="header-meta">
+        <div class="device-chip"><span class="chip-label">DEVICE</span><strong id="header-device">IOT-001</strong></div>
+        <div class="online-chip"><span class="live-dot"></span><span id="header-system-status">WAITING FOR TELEMETRY</span></div>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-heading">
+        <div>
+          <p class="eyebrow">SECURITY OPERATIONS / LIVE TELEMETRY</p>
+          <h1>IoT Security Monitoring System</h1>
+          <p class="subtitle">Behaviour-Based Device Impersonation Detection</p>
+        </div>
+        <div class="last-updated">Last event <time id="last-event-time">Waiting for telemetry</time></div>
+      </section>
+
+      <section class="metric-grid" aria-label="Current device readings">
+        <article class="metric-card status-card"><div class="metric-top"><span>Device Status</span><span class="metric-icon">●</span></div><strong class="metric-value" id="device-status">NO DATA</strong><small id="device-id-caption">Awaiting security event</small></article>
+        <article class="metric-card"><div class="metric-top"><span>Temperature</span><span class="metric-icon">°C</span></div><strong class="metric-value"><span id="temperature">--</span><small>°C</small></strong><small>DHT11 sensor</small></article>
+        <article class="metric-card"><div class="metric-top"><span>Humidity</span><span class="metric-icon">%</span></div><strong class="metric-value"><span id="humidity">--</span><small>%</small></strong><small>DHT11 sensor</small></article>
+        <article class="metric-card risk-card"><div class="metric-top"><span>Risk Score</span><span class="metric-icon">!</span></div><strong class="metric-value"><span id="risk-score">--</span><small>/ 100</small></strong><small id="risk-level">Waiting for assessment</small></article>
+      </section>
+
+      <section class="panel analysis-panel">
+        <div class="section-heading"><div><p class="eyebrow">RULE-BASED CHECKS</p><h2>Security Analysis</h2></div><span class="section-note">Live engine assessment</span></div>
+        <div class="check-grid" id="checks-grid">
+          <div class="check-item"><span>Identity</span><strong data-check="Identity" class="check-state unknown">NO DATA</strong></div>
+          <div class="check-item"><span>Temperature Behaviour</span><strong data-check="Temperature Behaviour" class="check-state unknown">NO DATA</strong></div>
+          <div class="check-item"><span>Humidity Behaviour</span><strong data-check="Humidity Behaviour" class="check-state unknown">NO DATA</strong></div>
+          <div class="check-item"><span>Message Frequency</span><strong data-check="Message Frequency" class="check-state unknown">NO DATA</strong></div>
+          <div class="check-item"><span>Motion</span><strong data-check="Motion" class="check-state unknown">NO DATA</strong></div>
+        </div>
+      </section>
+
+      <section class="threat-grid">
+        <article class="panel threat-panel" id="threat-panel">
+          <div class="section-heading"><div><p class="eyebrow">CURRENT ASSESSMENT</p><h2>Threat Status</h2></div><span class="threat-pill neutral" id="threat-band">NO DATA</span></div>
+          <div class="threat-details">
+            <div><span class="field-label">Classification</span><strong id="classification">Awaiting event</strong></div>
+            <div><span class="field-label">Risk score</span><strong id="threat-score">--</strong></div>
+            <div><span class="field-label">Risk level</span><strong id="threat-risk-level">--</strong></div>
+          </div>
+          <div class="reason-block"><span class="field-label">Reasons</span><ul id="reasons"><li>Security engine events will appear here.</li></ul></div>
+          <div class="actuator-row"><div><span class="field-label">LED</span><strong id="led-state">--</strong></div><div><span class="field-label">Buzzer</span><strong id="buzzer-state">--</strong></div></div>
+        </article>
+        <article class="panel cloud-panel">
+          <div class="section-heading"><div><p class="eyebrow">PIPELINE HEALTH</p><h2>Cloud &amp; Services</h2></div><span class="section-note">Local observations</span></div>
+          <div class="service-list">
+            <div class="service-row"><span class="service-symbol">MQ</span><div><strong>MQTT Broker</strong><small id="mqtt-detail">Checking broker reachability…</small></div><span class="service-state unknown" id="mqtt-state">CHECKING</span></div>
+            <div class="service-row"><span class="service-symbol">SE</span><div><strong>Security Engine</strong><small id="engine-detail">Waiting for recent events</small></div><span class="service-state unknown" id="engine-state">WAITING</span></div>
+            <div class="service-row"><span class="service-symbol">TB</span><div><strong>ThingsBoard</strong><small id="cloud-detail">Cloud state is not exposed to the local API</small></div><span class="service-state unknown" id="cloud-state">UNKNOWN</span></div>
+          </div>
+          <p class="service-footnote">MQTT shows TCP reachability. ThingsBoard is only marked configured/disabled here; the existing engine does not expose its live cloud connection state.</p>
+        </article>
+      </section>
+
+      <section class="panel charts-panel">
+        <div class="section-heading"><div><p class="eyebrow">RECENT SAMPLES</p><h2>Live Telemetry</h2></div><span class="section-note">From security-engine event log · latest 30 events</span></div>
+        <div class="chart-grid">
+          <article class="chart-card"><div class="chart-heading"><span>Temperature</span><strong id="chart-temp-value">--</strong></div><canvas id="temperature-chart" aria-label="Temperature time series chart"></canvas></article>
+          <article class="chart-card"><div class="chart-heading"><span>Humidity</span><strong id="chart-humidity-value">--</strong></div><canvas id="humidity-chart" aria-label="Humidity time series chart"></canvas></article>
+          <article class="chart-card"><div class="chart-heading"><span>Risk Score</span><strong id="chart-risk-value">--</strong></div><canvas id="risk-chart" aria-label="Risk score time series chart"></canvas></article>
+        </div>
+      </section>
+
+      <section class="panel events-panel">
+        <div class="section-heading"><div><p class="eyebrow">AUDIT TRAIL</p><h2>Recent Security Events</h2></div><span class="event-count" id="event-count">0 events</span></div>
+        <div class="table-wrap"><table><thead><tr><th>Timestamp</th><th>Device ID</th><th>Classification</th><th>Risk Score</th><th>Risk Level</th></tr></thead><tbody id="events-body"><tr><td colspan="5" class="empty-state">No events recorded yet. Start the security engine and a simulator.</td></tr></tbody></table></div>
+      </section>
+
+      <section class="panel controls-panel">
+        <div class="section-heading"><div><p class="eyebrow">SAFE DEMONSTRATION</p><h2>Simulation Controls</h2></div><span class="section-note">Uses existing simulator modules</span></div>
+        <div class="controls-row">
+          <button class="scenario-button normal" data-scenario="NORMAL_OPERATION"><span>▶</span>Normal Operation</button>
+          <button class="scenario-button" data-scenario="SIMULATE_IMPERSONATION"><span>⚑</span>Simulate Impersonation</button>
+          <button class="scenario-button" data-scenario="SENSOR_ANOMALY"><span>⌁</span>Sensor Anomaly</button>
+          <button class="scenario-button" data-scenario="TRAFFIC_ANOMALY"><span>↯</span>Traffic Anomaly</button>
+          <button class="stop-button" id="stop-simulator">Stop Simulator</button>
+        </div>
+        <p class="control-message" id="control-message">Starting a scenario stops the previous simulator process launched from this page. Stop any terminal-launched simulator first to avoid duplicate publishers.</p>
+      </section>
+    </main>
+    <footer><span>IoT Device Impersonation Detection</span><span>Local demo console · refreshes every 2 seconds</span></footer>
+  </div>
+  <script src="{{ url_for('static', filename='app.js') }}?v=3" defer></script>
+</body>
+</html>
